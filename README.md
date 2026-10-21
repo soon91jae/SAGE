@@ -1,33 +1,91 @@
-# SAGE: Sense-Aligned Grounding Evaluation
+<div align="center">
 
-**Research code and data — coming soon**
+# SAGE
+### Sense-Aligned Multimodal Grounding Evaluation with Gloss-Augmented Reasoning
 
-SAGE (Sense-Aligned Grounding Evaluation) is a research project investigating whether vision–language models ground word senses in visual evidence rather than relying on contextual shortcuts.
+**Beyond image–text matching: does a model actually ground the intended word sense?**
 
-The project examines the role of linguistic context and visual evidence in sense disambiguation, including diagnostic interventions designed to test whether predictions remain grounded when context is altered.
+[![Status](https://img.shields.io/badge/status-research%20preview-6366f1)](https://github.com/soon91jae/SAGE)
+[![Code](https://img.shields.io/badge/code-coming%20soon-64748b)](#release-status)
+[![Data](https://img.shields.io/badge/data-coming%20soon-64748b)](#release-status)
 
-## Status
+</div>
 
-This repository is a placeholder for the SAGE research release. **The code, datasets, and experiment scripts have not yet been uploaded.** We plan to release the associated materials here.
+![SAGE benchmark overview](assets/sage-overview.svg)
 
-## Research overview
+> **Research preview.** This README describes the SAGE benchmark and the Gloss-Augmented Reasoning (GAR) framework based on the October 2026 manuscript. **Code, processed benchmark data, and evaluation scripts are not yet available in this repository.**
 
-Our evaluation studies sense-level grounding through controlled comparisons, including:
+## Why SAGE?
 
-- Word-sense disambiguation with candidate visual evidence.
-- Diagnostics involving verb neutralization (NEU).
-- Sense-Preserving Image Substitution (SPIS) as a test of contextual and visual sensitivity.
+High image–text similarity does not necessarily mean a model recognizes the *intended sense* of an ambiguous expression. In SAGE, image choice must distinguish subtle meanings of **nouns**, **verbs**, and **named entities** even when alternative candidates look semantically plausible.
 
-Further documentation, setup instructions, and reproducibility details will accompany the release.
+SAGE unifies three established datasets under a **10-candidate image-selection** setting with one correct candidate:
 
-## Availability statement
+| Setting | Source dataset | Grounding target | Test examples |
+|:--|:--|:--|--:|
+| Noun senses | **VWSD** | Contextual word sense | 463 |
+| Verb senses | **VerSe** | OntoNotes verb sense | 1,264 |
+| Named entities | **WikiDiverse** | Contextual entity referent | 1,243 |
 
-> The code and data will be made publicly available at [https://github.com/soon91jae/SAGE](https://github.com/soon91jae/SAGE).
+*Numbers correspond to Table 1 of the October 2026 manuscript.*
+
+### 1. Beyond the original image–caption pairing: SPIS
+
+In VerSe, the original correct image may share many unrelated cues with its caption. **Sense-Preserving Image Swap (SPIS)** substitutes another image labeled with the **same verb sense**, while allowing objects, participants, and scene context to change. **Target-verb neutralization (NEU)** then tests how much image selection depends on the verb itself.
+
+| Diagnostic | Gold image | Target verb |
+|:--|:--|:--|
+| Original | Original caption-paired image | Preserved |
+| Original + NEU | Original caption-paired image | Neutralized |
+| SPIS | Different image with the same annotated verb sense | Preserved |
+| SPIS + NEU | Swapped image | Neutralized |
+
+In the reported diagnostic, three models clustered around **91–92 Hits@1** in the original paired setting, but diverged to **43.7–74.3 Hits@1** after SPIS. Neutralizing the verb in SPIS produced drops of **3.4–33.0 points**, revealing different dependencies on the target verb.
+
+### 2. Gloss-Augmented Reasoning (GAR)
+
+![GAR framework schematic](assets/gar-pipeline.svg)
+
+GAR examines **which linguistic evidence helps distinguish visually confusable candidates**. It uses external lexical glosses to synthesize and expand an intended-sense definition, then tests that definition in two ways:
+
+- **Definition-based ranking:** Score candidate images using an expanded, sense-specific description.
+- **Constraint-Guided Reasoning (CGR):** Break a definition into **object**, **attribute**, and **state** evidence; ask visual verification questions and aggregate their scores.
+
+The manuscript reports that lexical-resource-grounded definition augmentation is beneficial across all three settings, while CGR's benefits vary: stronger on VWSD and VerSe, but less reliable for fine-grained entity distinctions in WikiDiverse.
+
+## Main findings
+
+- **Performance does not transfer uniformly between grounding settings.** Model ranking agreement across dataset pairs is only partial (Kendall's τb **0.46–0.74**).
+- **Original image–caption pairs can mask verb-insensitive behavior.** SPIS and NEU expose differences that ordinary paired-image evaluation can conceal.
+- **Explicit lexical evidence matters.** Grounded definitions help image ranking, but constraints must be discriminative among the *actual alternatives* rather than merely plausible.
+
+## Paper figures
+
+The October 2026 manuscript includes:
+
+- **Figure 1:** Original task formulations of VWSD, VerSe, and WikiDiverse.
+- **Figure 2:** The sense-preserving image swap diagnostic.
+- **Figure 3:** GAR's definition synthesis, expansion, semantic decomposition, and visual verification.
+
+**Visuals in this README are newly redrawn summary schematics**, not verbatim extracted figures from the paper. The full paper figure assets will be included with the public release after source image and redistribution permissions are checked.
+
+## Release status
+
+| Resource | Status |
+|:--|:--|
+| Research overview and schematics | Available |
+| Benchmark construction and splits | Planned |
+| SPIS / NEU diagnostic code | Planned |
+| GAR / CGR inference pipeline | Planned |
+| Evaluation and reproducibility scripts | Planned |
+| Data access / licenses | To be documented |
+
+We intend to make the research code and shareable data available here. Third-party source datasets and images may remain subject to their original terms; release will respect those restrictions.
 
 ## Citation
 
-Citation details will be added when the paper's public bibliographic information is finalized.
+A BibTeX entry will be added after public bibliographic details are finalized.
 
-## Contact
+## Questions
 
-For questions about the research, please open an issue in this repository.
+Please use [GitHub Issues](https://github.com/soon91jae/SAGE/issues) for questions or release-related requests.
