@@ -11,8 +11,6 @@
 
 </div>
 
-![SAGE benchmark overview](assets/sage-overview.svg)
-
 > **Research preview.** This README describes the SAGE benchmark and the Gloss-Augmented Reasoning (GAR) framework based on the October 2026 manuscript. **Code, processed benchmark data, and evaluation scripts are not yet available in this repository.**
 
 ## Why SAGE?
@@ -42,9 +40,9 @@ In VerSe, the original correct image may share many unrelated cues with its capt
 
 In the reported diagnostic, three models clustered around **91–92 Hits@1** in the original paired setting, but diverged to **43.7–74.3 Hits@1** after SPIS. Neutralizing the verb in SPIS produced drops of **3.4–33.0 points**, revealing different dependencies on the target verb.
 
-### 2. Gloss-Augmented Reasoning (GAR)
+## GAR: Gloss-Augmented Reasoning
 
-![GAR framework schematic](assets/gar-pipeline.svg)
+### 2. Gloss-Augmented Reasoning (GAR)
 
 GAR examines **which linguistic evidence helps distinguish visually confusable candidates**. It uses external lexical glosses to synthesize and expand an intended-sense definition, then tests that definition in two ways:
 
@@ -67,13 +65,14 @@ The October 2026 manuscript includes:
 - **Figure 2:** The sense-preserving image swap diagnostic.
 - **Figure 3:** GAR's definition synthesis, expansion, semantic decomposition, and visual verification.
 
-**Visuals in this README are newly redrawn summary schematics**, not verbatim extracted figures from the paper. The full paper figure assets will be included with the public release after source image and redistribution permissions are checked.
+**Figures 1–3 from the manuscript are not yet hosted in this repository.** Previous placeholder graphics were removed. The actual manuscript figures will be added after extraction and verification; we do not substitute generated illustrations for original results.
 
 ## Release status
 
 | Resource | Status |
 |:--|:--|
-| Research overview and schematics | Available |
+| Research overview | Available |
+| Original manuscript figures | Prepared for upload; not yet hosted |
 | Benchmark construction and splits | Planned |
 | SPIS / NEU diagnostic code | Planned |
 | GAR / CGR inference pipeline | Planned |
